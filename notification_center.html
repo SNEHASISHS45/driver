@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Notification Center - Driver App</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#f47b25",
+              "background-light": "#f8f7f5",
+              "background-dark": "#221710",
+              "surface-light": "#ffffff",
+              "surface-dark": "#2d2018",
+              "text-main": "#221710",
+              "text-muted": "#75665c",
+            },
+            fontFamily: {
+              "display": ["Work Sans", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "0.25rem", 
+              "lg": "0.5rem", 
+              "xl": "0.75rem", 
+              "2xl": "1rem",
+              "full": "9999px"
+            },
+            boxShadow: {
+              'card': '0 2px 8px -2px rgba(244, 123, 37, 0.1), 0 1px 4px -1px rgba(0, 0, 0, 0.05)',
+              'card-hover': '0 10px 15px -3px rgba(244, 123, 37, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-main dark:text-white antialiased min-h-screen pb-24">
+<!-- Header Section -->
+<header class="sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-primary/10 dark:border-white/5 px-4 pt-12 pb-4">
+<div class="flex items-center justify-between max-w-md mx-auto">
+<div class="flex items-center gap-3">
+<button class="p-2 -ml-2 rounded-full hover:bg-primary/10 transition-colors">
+<span class="material-icons-outlined text-2xl text-text-main dark:text-white">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold tracking-tight">Notifications</h1>
+</div>
+<button class="text-sm font-medium text-primary hover:text-primary/80 transition-colors">
+                Mark all read
+            </button>
+</div>
+<!-- Filter Tabs (Optional for better UX) -->
+<div class="flex gap-2 mt-4 max-w-md mx-auto overflow-x-auto no-scrollbar pb-1">
+<button class="px-4 py-1.5 bg-primary text-white rounded-full text-xs font-medium shadow-sm flex-shrink-0">All</button>
+<button class="px-4 py-1.5 bg-white dark:bg-surface-dark border border-primary/20 text-text-muted dark:text-gray-300 rounded-full text-xs font-medium flex-shrink-0">Orders</button>
+<button class="px-4 py-1.5 bg-white dark:bg-surface-dark border border-primary/20 text-text-muted dark:text-gray-300 rounded-full text-xs font-medium flex-shrink-0">Payments</button>
+<button class="px-4 py-1.5 bg-white dark:bg-surface-dark border border-primary/20 text-text-muted dark:text-gray-300 rounded-full text-xs font-medium flex-shrink-0">System</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="max-w-md mx-auto px-4 py-6 space-y-8">
+<!-- Today Section -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-sm font-semibold uppercase tracking-wider text-text-muted dark:text-gray-400">Today</h2>
+</div>
+<div class="space-y-3">
+<!-- Notification Card: High Priority Order -->
+<article class="relative group">
+<!-- Swipe Action Background (Simulated) -->
+<div class="absolute inset-0 bg-primary/10 rounded-xl flex items-center justify-end pr-6">
+<span class="material-icons-outlined text-primary">mark_chat_read</span>
+</div>
+<div class="relative bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-card hover:shadow-card-hover border-l-4 border-primary transition-all duration-200 transform hover:-translate-y-0.5 cursor-pointer">
+<div class="flex gap-4">
+<!-- Icon Container -->
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-icons-round text-primary text-2xl">shopping_bag</span>
+</div>
+<!-- Content -->
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-base font-semibold text-text-main dark:text-white truncate pr-2">New Order Available</h3>
+<span class="text-xs font-medium text-primary whitespace-nowrap">2m ago</span>
+</div>
+<p class="text-sm text-text-muted dark:text-gray-300 line-clamp-2">
+                                    Order #2841 from <span class="font-medium text-text-main dark:text-white">Whole Foods Market</span>. 3 items, 1.2 miles away. High tip probability.
+                                </p>
+<!-- Action Buttons -->
+<div class="mt-3 flex gap-2">
+<button class="flex-1 bg-primary text-white text-xs font-medium py-2 rounded-lg hover:bg-primary/90 transition">Accept</button>
+<button class="px-3 py-2 bg-background-light dark:bg-background-dark text-text-muted text-xs font-medium rounded-lg border border-primary/10 hover:bg-gray-100 dark:hover:bg-white/5 transition">Decline</button>
+</div>
+</div>
+<!-- Unread Dot -->
+<div class="absolute top-4 right-4 w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-white dark:ring-surface-dark"></div>
+</div>
+</div>
+</article>
+<!-- Notification Card: Payment -->
+<article class="relative bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-card hover:shadow-card-hover border border-primary/10 dark:border-white/5 transition-all duration-200 cursor-pointer">
+<div class="flex gap-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+<span class="material-icons-round text-green-600 dark:text-green-400 text-2xl">payments</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-base font-semibold text-text-main dark:text-white">Payout Processed</h3>
+<span class="text-xs text-text-muted dark:text-gray-500">2h ago</span>
+</div>
+<p class="text-sm text-text-muted dark:text-gray-300">
+                                Your weekly earnings of <span class="font-bold text-text-main dark:text-white">$450.00</span> have been transferred to your bank account ending in 8832.
+                            </p>
+</div>
+<!-- Unread Dot -->
+<div class="absolute top-4 right-4 w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-white dark:ring-surface-dark"></div>
+</div>
+</article>
+<!-- Notification Card: Schedule -->
+<article class="relative bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-card hover:shadow-card-hover border border-primary/10 dark:border-white/5 transition-all duration-200 cursor-pointer opacity-70 hover:opacity-100">
+<div class="flex gap-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
+<span class="material-icons-round text-blue-500 dark:text-blue-400 text-2xl">calendar_month</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-base font-semibold text-text-main dark:text-white">Shift Reminder</h3>
+<span class="text-xs text-text-muted dark:text-gray-500">5h ago</span>
+</div>
+<p class="text-sm text-text-muted dark:text-gray-300">
+                                Upcoming shift: Today, 2:00 PM - 8:00 PM in Downtown Area.
+                            </p>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- Yesterday Section -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-sm font-semibold uppercase tracking-wider text-text-muted dark:text-gray-400">Yesterday</h2>
+</div>
+<div class="space-y-3">
+<!-- Notification Card: System Announcement -->
+<article class="relative bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-card border border-primary/10 dark:border-white/5 opacity-80">
+<div class="flex gap-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+<span class="material-icons-round text-gray-500 dark:text-gray-400 text-2xl">dns</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-base font-semibold text-text-main dark:text-white">System Maintenance</h3>
+<span class="text-xs text-text-muted dark:text-gray-500">Yesterday</span>
+</div>
+<p class="text-sm text-text-muted dark:text-gray-300">
+                                The driver app will be undergoing maintenance on Sunday from 2 AM to 4 AM.
+                            </p>
+</div>
+</div>
+</article>
+<!-- Notification Card: Tip Added -->
+<article class="relative bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-card border border-primary/10 dark:border-white/5 opacity-80">
+<div class="flex gap-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center">
+<span class="material-icons-round text-yellow-600 dark:text-yellow-400 text-2xl">star</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-base font-semibold text-text-main dark:text-white">Tip Added!</h3>
+<span class="text-xs text-text-muted dark:text-gray-500">Yesterday</span>
+</div>
+<p class="text-sm text-text-muted dark:text-gray-300">
+                                Customer from Order #8821 added a $5.00 tip. Great job!
+                            </p>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- Earlier Section -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-sm font-semibold uppercase tracking-wider text-text-muted dark:text-gray-400">Earlier</h2>
+</div>
+<!-- Empty State for Earlier -->
+<div class="flex flex-col items-center justify-center py-8 text-center bg-white dark:bg-surface-dark rounded-xl border border-dashed border-primary/20">
+<div class="w-16 h-16 bg-background-light dark:bg-background-dark rounded-full flex items-center justify-center mb-3">
+<span class="material-icons-outlined text-text-muted text-3xl">history</span>
+</div>
+<p class="text-sm font-medium text-text-main dark:text-white">No older notifications</p>
+<p class="text-xs text-text-muted">Notifications are automatically cleared after 30 days.</p>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation (Contextual) -->
+<nav class="fixed bottom-0 w-full bg-white dark:bg-surface-dark border-t border-gray-100 dark:border-white/5 pb-6 pt-3 px-6 z-40">
+<div class="flex justify-between items-center max-w-md mx-auto">
+<button class="flex flex-col items-center gap-1 text-text-muted dark:text-gray-400 hover:text-primary transition">
+<span class="material-icons-outlined text-2xl">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-text-muted dark:text-gray-400 hover:text-primary transition">
+<span class="material-icons-outlined text-2xl">list_alt</span>
+<span class="text-[10px] font-medium">Orders</span>
+</button>
+<div class="relative -top-6">
+<button class="w-14 h-14 bg-primary rounded-full shadow-lg shadow-primary/40 flex items-center justify-center text-white transform transition hover:scale-105">
+<span class="material-icons-round text-3xl">qr_code_scanner</span>
+</button>
+</div>
+<button class="flex flex-col items-center gap-1 text-primary">
+<div class="relative">
+<span class="material-icons-round text-2xl">notifications</span>
+<span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white dark:border-surface-dark"></span>
+</div>
+<span class="text-[10px] font-medium">Alerts</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-text-muted dark:text-gray-400 hover:text-primary transition">
+<span class="material-icons-outlined text-2xl">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</button>
+</div>
+</nav>
+</body></html>

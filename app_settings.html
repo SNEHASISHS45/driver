@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Driver App Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#f47b25",
+              "background-light": "#f8f7f5",
+              "background-dark": "#221710",
+              "surface-dark": "#2d241e", // Slightly lighter than background-dark for cards
+              "surface-light": "#ffffff",
+            },
+            fontFamily: {
+              "display": ["Work Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        /* Custom Toggle Switch Styles */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #f47b25;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #f47b25;
+        }
+        
+        /* Hide scrollbar for clean UI */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-white font-display min-h-screen flex justify-center selection:bg-primary selection:text-white">
+<!-- Mobile Device Container -->
+<div class="w-full max-w-md bg-background-light dark:bg-background-dark min-h-screen relative shadow-2xl overflow-hidden flex flex-col">
+<!-- Status Bar Placeholder (iOS Style) -->
+<div class="h-12 w-full flex justify-between items-center px-6 pt-2 z-20">
+<span class="text-sm font-semibold">9:41</span>
+<div class="flex space-x-1.5 items-center">
+<span class="material-icons-round text-base">signal_cellular_alt</span>
+<span class="material-icons-round text-base">wifi</span>
+<span class="material-icons-round text-lg">battery_full</span>
+</div>
+</div>
+<!-- Header -->
+<header class="px-6 py-4 flex items-center justify-between sticky top-0 z-10 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md">
+<div class="flex items-center gap-4">
+<button class="p-2 -ml-2 rounded-full hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">
+<span class="material-icons-round text-2xl">arrow_back</span>
+</button>
+<h1 class="text-3xl font-bold tracking-tight">Settings</h1>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary">
+<img alt="Profile picture of the driver" class="w-full h-full object-cover" data-alt="Close up portrait of a smiling man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDX82pgPPfm_LIDQbp1bTThUFIGMUaHdMz1ObZ7z27Io99vjJ2dWg3kR4HvvfltMEsWZzLe4Zz5ol6w1ozJbgrEpT1AhMYb1xmIgJd5b8N00g4UVuNOS38PTuwS94QD5xT675P4EqsuZf055eeOAEYOXeuX2SiduPUbQlTBIztSgLUniWIsuB4Fy6qYjmdj4s86kCtMKu6Hh9OHTr8wz32ChEx_m2YJKiAiSuUl6qgDbvE36yw4WWGsJKqtf6XTVIfkc_uMMTGHOA"/>
+</div>
+</header>
+<!-- Main Content Scroll Area -->
+<main class="flex-1 overflow-y-auto px-6 pb-8 space-y-8">
+<!-- Section: Notifications -->
+<section>
+<h2 class="text-sm font-semibold text-primary uppercase tracking-wider mb-3 ml-1">Notifications</h2>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-white/5">
+<!-- Push Notifications -->
+<div class="flex items-center justify-between p-4 border-b border-slate-100 dark:border-white/5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500">
+<span class="material-icons-round text-xl">notifications</span>
+</div>
+<span class="text-base font-medium">Push Notifications</span>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-300 checked:border-primary transition-all duration-300 ease-in-out right-6 checked:right-0" id="toggle-push" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 dark:bg-white/20 cursor-pointer" for="toggle-push"></label>
+</div>
+</div>
+<!-- Sound Alerts -->
+<div class="flex items-center justify-between p-4 border-b border-slate-100 dark:border-white/5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-500">
+<span class="material-icons-round text-xl">volume_up</span>
+</div>
+<span class="text-base font-medium">Sound Alerts</span>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-300 checked:border-primary transition-all duration-300 ease-in-out right-0" id="toggle-sound" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-primary cursor-pointer" for="toggle-sound"></label>
+</div>
+</div>
+<!-- Vibration -->
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-500">
+<span class="material-icons-round text-xl">vibration</span>
+</div>
+<span class="text-base font-medium">Vibration</span>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-300 checked:border-primary transition-all duration-300 ease-in-out right-0" id="toggle-vibe" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-primary cursor-pointer" for="toggle-vibe"></label>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Navigation -->
+<section>
+<h2 class="text-sm font-semibold text-primary uppercase tracking-wider mb-3 ml-1">Navigation</h2>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-slate-200 dark:border-white/5 space-y-4">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500">
+<span class="material-icons-round text-xl">map</span>
+</div>
+<span class="text-base font-medium">Map Preference</span>
+</div>
+<!-- Map Cards Selection -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Google Maps Option -->
+<label class="relative cursor-pointer group">
+<input checked="" class="peer sr-only" name="map-pref" type="radio"/>
+<div class="p-3 rounded-lg border-2 border-transparent bg-slate-100 dark:bg-white/5 peer-checked:bg-primary/20 peer-checked:border-primary transition-all flex flex-col items-center gap-2">
+<img alt="Google Maps Logo" class="w-10 h-10 object-contain drop-shadow-sm" data-alt="Google Maps colorful pin logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3AkkgeAU6oP2ojS_rOAKM0WeHipi_TvB8Ndh7Nz6MAd8vlubeOgQD2ZQfQdAO-Sdh7wzwsx33Cb73PYv_Cwl2NXVPjBKv9g1lGAPAFKZPV0DRoKC1WloIRZ9BiqDWNRyxGb9lVQqxiCRtiNVsJQem9nLaYjMgr8kGzWqWPflg5MndiTpPLPayRGqUW3jNzxzR2u1ASfYO0fgp1G8w1XnovoaklCkyVmt706qhdG3hDtJYutojI2HU1Od4IpZ7KdJNifrmtb4AGw"/>
+<span class="text-sm font-medium">Google Maps</span>
+</div>
+<div class="absolute top-2 right-2 opacity-0 peer-checked:opacity-100 text-primary transition-opacity">
+<span class="material-icons-round text-lg">check_circle</span>
+</div>
+</label>
+<!-- Waze Option -->
+<label class="relative cursor-pointer group">
+<input class="peer sr-only" name="map-pref" type="radio"/>
+<div class="p-3 rounded-lg border-2 border-transparent bg-slate-100 dark:bg-white/5 peer-checked:bg-primary/20 peer-checked:border-primary transition-all flex flex-col items-center gap-2">
+<img alt="Waze Logo" class="w-10 h-10 object-contain drop-shadow-sm" data-alt="Waze smiling face logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCE3MIZTny2RLG8YJqA9HvKzkRe_HFS1SH711BzE88q0crxJbweKBKPVLuGNvtzxmz5zua9uTUxhErLsmOmds2rx78TXjF8UEkaywzmapnVCABTQVWA_QDXrUA0-S08UWQh8T_gcWO4EvBqEzc43CxeqXf9_jRbyyukHwSFouoz4g0hNpl9yJXZKAAi3pW1cS0Ynd2UHIZXEumCM6AstfFzvNYYiTpZdtbDFFLxk40a2UsLx7JkVm5jDGISuZoRJpX4QRRg9bui7A"/>
+<span class="text-sm font-medium">Waze</span>
+</div>
+<div class="absolute top-2 right-2 opacity-0 peer-checked:opacity-100 text-primary transition-opacity">
+<span class="material-icons-round text-lg">check_circle</span>
+</div>
+</label>
+</div>
+</div>
+</section>
+<!-- Section: General -->
+<section>
+<h2 class="text-sm font-semibold text-primary uppercase tracking-wider mb-3 ml-1">General</h2>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-white/5">
+<!-- Language -->
+<button class="w-full flex items-center justify-between p-4 border-b border-slate-100 dark:border-white/5 active:bg-slate-50 dark:active:bg-white/5 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500">
+<span class="material-icons-round text-xl">language</span>
+</div>
+<span class="text-base font-medium">Language</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+<span class="text-sm">English (US)</span>
+<span class="material-icons-round text-xl">chevron_right</span>
+</div>
+</button>
+<!-- Theme -->
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-orange-500/10 flex items-center justify-center text-primary">
+<span class="material-icons-round text-xl">dark_mode</span>
+</div>
+<span class="text-base font-medium">Dark Mode</span>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-300 checked:border-primary transition-all duration-300 ease-in-out right-0" id="toggle-theme" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-primary cursor-pointer" for="toggle-theme"></label>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer Action -->
+<div class="pt-4 pb-6">
+<button class="w-full py-4 px-6 rounded-xl bg-red-500/10 text-red-600 dark:text-red-400 font-semibold text-lg hover:bg-red-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+<span class="material-icons-round">logout</span>
+                    Log Out
+                </button>
+<p class="text-center text-xs text-slate-400 dark:text-slate-600 mt-6 font-medium">
+                    Version 2.4.0 (Build 302)
+                </p>
+</div>
+</main>
+<!-- Bottom Tab Navigation (Contextual Awareness) -->
+<nav class="bg-background-light dark:bg-background-dark border-t border-slate-200 dark:border-white/5 px-6 pb-6 pt-3 flex justify-between items-center text-xs font-medium z-20">
+<button class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors">
+<span class="material-icons-round text-2xl">home</span>
+                Home
+            </button>
+<button class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors">
+<span class="material-icons-round text-2xl">receipt_long</span>
+                Orders
+            </button>
+<button class="relative -top-6 bg-primary text-white p-4 rounded-full shadow-lg shadow-primary/40 hover:scale-105 transition-transform">
+<span class="material-icons-round text-3xl">qr_code_scanner</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors">
+<span class="material-icons-round text-2xl">attach_money</span>
+                Earnings
+            </button>
+<button class="flex flex-col items-center gap-1 text-primary transition-colors">
+<span class="material-icons-round text-2xl">settings</span>
+                Settings
+            </button>
+</nav>
+</div>
+</body></html>

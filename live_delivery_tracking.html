@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Live Delivery Tracking</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f47b25",
+                        "primary-dark": "#d96412",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#221710",
+                        "surface-dark": "#2d2018", // Slightly lighter than bg-dark for cards
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px -5px rgba(244, 123, 37, 0.5)',
+                        'up': '0 -4px 20px -5px rgba(0, 0, 0, 0.5)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>/* Custom Map Styles to simulate dark mode map */
+.map-container {
+    background-color: #1a1a1a;
+    background-image: linear-gradient(rgba(34, 23, 16, 0.3), rgba(34, 23, 16, 0.3)), url(https://lh3.googleusercontent.com/aida-public/AB6AXuD0w3OFfVMbSuMdDx3YsFyt8-aq8grZm7Mn1UZ1CNWqS7vOVD1iU9tua-yWDX4bquvlT1akbq14qi2CNoSEfn4GY8655DvDnweKuod8fxinjpvPHZTZXC8mJQkaCRugv2PAVMjOSUTnf-_Yw3p537q7OzYLRw-OxEwiaHBYpwrzxTeD30x8mzG4WPTBgvk1V0w352Cp5PmGb6j0zP017WOOAtx8CIuZMIBS2kbwewYp704wTRYkXxD5LTIvCCLDxPeUPvUpYTDSaw);
+    background-size: cover;
+    background-position: center;
+    filter: grayscale(80%) contrast(110%) brightness(60%)
+    }
+/* Slide to confirm animation */
+.slider-thumb {
+    transition: transform 0.1s ease-out
+    }
+/* Hide scrollbar for clean UI */
+.no-scrollbar::-webkit-scrollbar {
+    display: none
+    }
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none
+    }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-gray-100 h-screen w-full overflow-hidden flex flex-col relative">
+<!-- Map Layer -->
+<div class="absolute inset-0 z-0 h-[55%] w-full overflow-hidden">
+<!-- Actual Map Image Background -->
+<div class="map-container absolute inset-0 z-0" data-alt="Dark stylized street map view of a city" data-location="San Francisco" style=""></div>
+<!-- Simulated Route Line (SVG overlay) -->
+<svg class="absolute inset-0 z-10 w-full h-full pointer-events-none" style="opacity: 0.9;">
+<path class="drop-shadow-lg" d="M 180 400 L 180 320 Q 180 280 220 280 L 280 280 Q 320 280 320 240 L 320 150" fill="none" stroke="#f47b25" stroke-dasharray="10 0" stroke-linecap="round" stroke-width="6"></path>
+<!-- Driver Position Pulse -->
+<circle class="animate-ping opacity-75" cx="180" cy="400" fill="#f47b25" r="8"></circle>
+<circle cx="180" cy="400" fill="white" r="6"></circle>
+<!-- Destination Pin -->
+<g transform="translate(320, 120)">
+<path d="M12 0C5.37 0 0 5.37 0 12c0 9 12 20 12 20s12-11 12-20c0-6.63-5.37-12-12-12zm0 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" fill="#f47b25"></path>
+</g>
+</svg>
+<!-- Floating Status Header -->
+<div class="absolute top-12 left-4 right-4 z-20 flex justify-center">
+<div class="bg-surface-dark/90 backdrop-blur-md text-white px-5 py-3 rounded-full shadow-lg flex items-center space-x-3 border border-white/10">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+</span>
+<div class="text-sm font-semibold">On the way • 5 min</div>
+<div class="h-4 w-[1px] bg-white/20"></div>
+<div class="text-sm font-normal text-gray-300">10:45 AM Arrival</div>
+</div>
+</div>
+<!-- Map Controls -->
+<div class="absolute right-4 bottom-8 flex flex-col space-y-3 z-20">
+<button class="bg-surface-dark/90 backdrop-blur-md p-3 rounded-full shadow-lg border border-white/10 text-white hover:bg-primary transition-colors">
+<span class="material-icons-round text-xl">near_me</span>
+</button>
+<button class="bg-surface-dark/90 backdrop-blur-md p-3 rounded-full shadow-lg border border-white/10 text-white hover:bg-primary transition-colors">
+<span class="material-icons-round text-xl">layers</span>
+</button>
+</div>
+</div>
+<!-- Draggable Bottom Sheet Container -->
+<div class="absolute bottom-0 left-0 right-0 h-[52%] z-30 flex flex-col">
+<!-- Sheet Handle/Curve -->
+<div class="h-6 w-full relative">
+<!-- This creates the rounded top effect visually connecting to the card below -->
+<div class="absolute top-0 left-0 right-0 bottom-[-10px] bg-surface-dark rounded-t-3xl shadow-up border-t border-white/5"></div>
+<!-- Drag Handle -->
+<div class="absolute top-3 left-1/2 transform -translate-x-1/2 w-12 h-1.5 bg-gray-600 rounded-full z-40"></div>
+</div>
+<!-- Main Content Area -->
+<div class="flex-1 bg-surface-dark px-6 pb-8 pt-2 flex flex-col shadow-up overflow-hidden">
+<!-- Customer Header -->
+<div class="flex items-start justify-between mb-6">
+<div class="flex items-center space-x-4">
+<div class="relative">
+<img alt="Portrait of customer Sarah Jenkins" class="w-14 h-14 rounded-full object-cover border-2 border-primary/50 shadow-glow" data-alt="Portrait of customer Sarah Jenkins" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKJ6W3zmI4Pt76t12kVHVjt2ORikvdfhoqFHOLwVcTBi_UTeORwUlZET3dgUR5I0vY2ZVh2iUn6To1TYofhPQe3s3s0jJQGQRcDXlw5ZZPlbunV15rFbjYYyHh5-wdx4jD6oeSryp1jLUtRG1xO2tkmIO_Vpk-g_Tp67WNDqZmrjScFoHkEpiXDsBdKFS7lMdEt43qbGWERoJI36JUTuAH_-mi3ZiVtBuox6R_Ui5LYTs_TCfcveT89qD8rqWH4Zrf_JaQcdWI1Q"/>
+<div class="absolute -bottom-1 -right-1 bg-surface-dark rounded-full p-0.5">
+<div class="bg-green-500 w-4 h-4 rounded-full border-2 border-surface-dark"></div>
+</div>
+</div>
+<div>
+<h2 class="text-xl font-bold text-white leading-tight">Sarah Jenkins</h2>
+<div class="flex items-center text-primary text-sm mt-0.5">
+<span class="material-icons-round text-base mr-1">star</span>
+<span class="font-semibold mr-1">4.9</span>
+<span class="text-gray-400 font-normal">(12 orders)</span>
+</div>
+</div>
+</div>
+<div class="flex space-x-2">
+<button class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-primary transition-colors">
+<span class="material-icons-round">chat_bubble</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-primary hover:bg-primary-dark flex items-center justify-center text-white shadow-lg shadow-primary/30 transition-colors">
+<span class="material-icons-round">call</span>
+</button>
+</div>
+</div>
+<!-- Address Section -->
+<div class="mb-6 bg-background-dark/50 p-4 rounded-xl border border-white/5 flex items-start justify-between group cursor-pointer hover:border-primary/30 transition-colors">
+<div class="flex items-start space-x-3">
+<span class="material-icons-round text-primary mt-0.5">location_on</span>
+<div>
+<p class="text-gray-200 font-medium text-lg leading-snug">123 Maple Street</p>
+<p class="text-gray-400 text-sm">Apt 4B, Entrance code: #1234</p>
+</div>
+</div>
+<button class="text-gray-500 hover:text-white transition-colors">
+<span class="material-icons-round text-lg">content_copy</span>
+</button>
+</div>
+<!-- Order Checklist (Scrollable) -->
+<div class="flex-1 overflow-y-auto no-scrollbar mb-6 -mx-2 px-2">
+<h3 class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-3">Order Items (3)</h3>
+<div class="space-y-3">
+<!-- Item 1 (Checked) -->
+<label class="flex items-center space-x-3 p-3 rounded-lg bg-background-dark/30 border border-white/5 cursor-pointer hover:bg-background-dark/50 transition-colors opacity-60">
+<div class="relative flex items-center">
+<input checked="" class="peer h-5 w-5 cursor-pointer appearance-none rounded border border-gray-500 bg-transparent checked:border-primary checked:bg-primary transition-all" type="checkbox"/>
+<span class="material-icons-round absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-sm text-white opacity-0 peer-checked:opacity-100 pointer-events-none">check</span>
+</div>
+<div class="flex-1">
+<p class="text-white font-medium line-through decoration-gray-500">Organic Bananas</p>
+<p class="text-xs text-gray-500">2 bunches • ~2.5 lbs</p>
+</div>
+</label>
+<!-- Item 2 -->
+<label class="flex items-center space-x-3 p-3 rounded-lg bg-background-dark/30 border border-white/5 cursor-pointer hover:bg-background-dark/50 transition-colors">
+<div class="relative flex items-center">
+<input class="peer h-5 w-5 cursor-pointer appearance-none rounded border border-gray-500 bg-transparent checked:border-primary checked:bg-primary transition-all" type="checkbox"/>
+<span class="material-icons-round absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-sm text-white opacity-0 peer-checked:opacity-100 pointer-events-none">check</span>
+</div>
+<div class="flex-1">
+<p class="text-white font-medium">Sourdough Bread</p>
+<p class="text-xs text-gray-400">1 loaf • Sliced</p>
+</div>
+<div class="w-10 h-10 rounded bg-white/5 overflow-hidden flex-shrink-0">
+<img alt="Loaf of sourdough bread" class="w-full h-full object-cover opacity-80" data-alt="Loaf of sourdough bread" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6GF0tdwabtMXldlf2ZosU_h5krOG1SuVmW4PV9fF3_EPjsDqH2k65ZFe3QrKhSPSCKJSTlDhpdDH3iefpAYQ_SGfGNZXNUaImqdhkwMx_7Lqagjzu3szgAjFQjXA9HED97fmadI8r6iuwm8MuTdJnwrZbpRpaLSZq7gCYGLPDorF1r7qCPcDTfJCD7qquJXvL_Sf6vF-n2_q7mZtMi1i0u9oGiCd_UxRUEsmASe7P1kpuyP1h_3wHPt8BEgFI5LLhHRjzfoxnUg"/>
+</div>
+</label>
+<!-- Item 3 -->
+<label class="flex items-center space-x-3 p-3 rounded-lg bg-background-dark/30 border border-white/5 cursor-pointer hover:bg-background-dark/50 transition-colors">
+<div class="relative flex items-center">
+<input class="peer h-5 w-5 cursor-pointer appearance-none rounded border border-gray-500 bg-transparent checked:border-primary checked:bg-primary transition-all" type="checkbox"/>
+<span class="material-icons-round absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-sm text-white opacity-0 peer-checked:opacity-100 pointer-events-none">check</span>
+</div>
+<div class="flex-1">
+<p class="text-white font-medium">Whole Milk</p>
+<p class="text-xs text-gray-400">1 Gallon</p>
+</div>
+<div class="w-10 h-10 rounded bg-white/5 overflow-hidden flex-shrink-0">
+<img alt="Bottle of milk" class="w-full h-full object-cover opacity-80" data-alt="Bottle of milk" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB99aQeC4Dyirvl7F124XFpEhXYNOL8xJdy6B5tADJ_zw350hFijuJhrDpICaCSo8P_ajWYFoPM4Jcuv1OifONkS7I3p-GuEsuHspZyz41boBg-MydQ6dGYP1kt4iS8kgtqTgdb8RmuMwXtXbicRt-Vgz9pMAT8SE_iGIAi0irzlTs3TiBnTinsVaPf-bxA1gf05-1sy82aO0AA0_BDdquoIbUM-4kEJpMct7vNINOcDeBc477voMuZBZwOwkOFff1N2lfCrs6Juw"/>
+</div>
+</label>
+</div>
+</div>
+<!-- Slide to Confirm Action -->
+<div class="mt-auto pb-4">
+<div class="relative h-14 w-full bg-background-dark rounded-full overflow-hidden flex items-center border border-white/5 group">
+<!-- Background Text -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+<span class="text-gray-400 font-semibold text-sm tracking-wide group-hover:text-white transition-colors animate-pulse">Slide to Complete Delivery</span>
+</div>
+<!-- Progress Track (Visual indicator of incomplete) -->
+<div class="absolute left-0 top-0 bottom-0 bg-primary/20 w-0 transition-all duration-100"></div>
+<!-- Slider Thumb -->
+<div class="absolute left-1 top-1 bottom-1 w-12 bg-primary rounded-full shadow-lg z-10 flex items-center justify-center cursor-grab active:cursor-grabbing hover:bg-primary-dark transition-colors slider-thumb">
+<span class="material-icons-round text-white">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>
