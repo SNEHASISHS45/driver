@@ -1,271 +1,398 @@
-<?php include 'includes/header.php'; ?>
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Driver Dashboard Premium</title>
 
-<style type="text/tailwindcss">
-    .mission-metrics {
-        display: grid;
-        grid-template-columns: 1.2fr 1fr;
-        gap: 1rem;
-    }
-    .status-badge {
-        @apply px-2.5 py-1 rounded-full bg-white/5 border border-white/10 flex items-center gap-1.5;
-    }
-    .hyper-glass {
-        @apply bg-white/[0.03] backdrop-blur-[60px] border border-white/10 shadow-2xl;
-        background-image: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);
-    }
-    .neural-grid {
-        background-image: 
-            linear-gradient(rgba(244, 123, 37, 0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(244, 123, 37, 0.05) 1px, transparent 1px);
-        background-size: 40px 40px;
-    }
-    .primary-gradient {
-        @apply bg-gradient-to-br from-[#FF6B00] via-primary to-[#FF8A00];
-    }
-    .noise-overlay {
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        @apply opacity-[0.03] pointer-events-none;
-    }
-</style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Enable manual dark mode toggling
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        gray: {
+                            850: '#1f2937',
+                            900: '#111827',
+                            950: '#0B0E11', // Deep dark background
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
-<main class="relative h-screen flex flex-col overflow-y-auto bg-background-dark pt-24 pb-32">
-    <!-- Immersive Background System -->
-    <div class="fixed inset-0 z-0">
-        <div class="absolute inset-0 neural-grid opacity-20"></div>
-        <div class="absolute inset-0 animate-scan bg-gradient-to-b from-transparent via-primary/5 to-transparent h-20 w-full z-10"></div>
-        <div class="absolute inset-0 noise-overlay"></div>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Hide Scrollbar but allow scrolling */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* --- Swipe Button Styles --- */
+        .swipe-container {
+            position: relative;
+            width: 100%;
+            height: 64px; /* h-16 */
+            border-radius: 9999px;
+            overflow: hidden;
+            user-select: none;
+            cursor: pointer;
+            transition: background-color 0.4s ease;
+        }
         
-        <!-- Dynamic Environmental Glows -->
-        <div class="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] animate-pulse-slow"></div>
-        <div class="absolute bottom-1/4 right-0 w-[400px] h-[400px] bg-[#FF4D00]/10 rounded-full blur-[100px] animate-pulse-slow"></div>
-    </div>
+        /* The Knob */
+        .swipe-knob {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            height: 56px; /* h-14 */
+            width: 56px;  /* w-14 */
+            background-color: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy effect */
+        }
 
-    <!-- Fixed Top Bar -->
-    <header class="fixed top-0 left-0 w-full z-[60]">
-        <div class="bg-background-dark/90 backdrop-blur-3xl border-b border-white/5 p-4 flex justify-between items-center shadow-lg">
+        /* Text Labels inside button */
+        .swipe-text {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: opacity 0.3s ease;
+            pointer-events: none; /* Let clicks pass through */
+        }
+
+        /* Animation Keyframes */
+        @keyframes slide-up-fade {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .animate-enter {
+            animation: slide-up-fade 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-950 transition-colors duration-500 min-h-screen flex flex-col relative pb-24">
+
+    <header class="sticky top-0 z-40 bg-gray-50/80 dark:bg-gray-950/80 backdrop-blur-xl border-b border-transparent dark:border-white/5 transition-colors duration-500">
+        <div class="px-6 pt-5 pb-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-xl overflow-hidden border border-white/10">
-                    <img alt="Driver" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8W3iKNx3-UE1vvEajatD79FdBBFxEg4mHXOGwjsVjxTocBu-7ZyuvmflZ1VntNxDdprGmbq5zGGSrsuWaazZKFRbIKHFmwi40JvE2hail7M0GYX28-A75Z8wYwgGaMZ2p5TQDfmJ5-_bQ-N3VYaFKzJgyy5wbMqlMGr36WSaNsG_dicbHpScEoPraJagQn3HEix81YW9nYZ2tz2PxGwSI6HTFMo3-54eSS8cD6K5UWhzgH2ZsebpnIQN6I9GMIJqLn_zFZA2i1Q"/>
+                <div class="relative">
+                    <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-white/10 overflow-hidden border-2 border-white dark:border-white/20">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Profile" class="w-full h-full object-cover">
+                    </div>
+                    <div id="header-status-dot" class="absolute bottom-0 right-0 w-3 h-3 bg-gray-400 border-2 border-white dark:border-gray-900 rounded-full transition-colors duration-300"></div>
                 </div>
                 <div>
-                    <h4 class="text-[12px] font-bold text-white leading-tight">Alex Rodriguez</h4>
-                    <div id="status-badge" class="status-badge mt-1">
-                        <span id="status-dot" class="w-1.5 h-1.5 bg-gray-600 rounded-full"></span>
-                        <span id="status-text" class="text-[8px] font-bold text-gray-400 uppercase tracking-widest">System Offline</span>
-                    </div>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider leading-none mb-1">Welcome back</p>
+                    <h2 class="text-sm font-extrabold text-gray-900 dark:text-white leading-none">Partner Alex</h2>
                 </div>
             </div>
-            <button onclick="window.location.href='notifications.php'" class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-white relative active:scale-95 transition-all">
-                <span class="material-icons-round text-lg">notifications_none</span>
-                <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-primary rounded-full border-2 border-[#1a1a1a]"></span>
+
+            <button onclick="toggleTheme()" class="w-10 h-10 rounded-full bg-white dark:bg-white/10 border border-gray-100 dark:border-white/5 flex items-center justify-center text-gray-600 dark:text-white shadow-sm active:scale-90 transition-transform">
+                <span class="material-icons-round text-xl dark:hidden">dark_mode</span>
+                <span class="material-icons-round text-xl hidden dark:block">light_mode</span>
             </button>
         </div>
     </header>
 
-    <!-- Center Stage: Connection Status -->
-    <div class="flex-1 flex flex-col items-center justify-center relative z-10 px-8">
-        <div class="relative mb-8">
-            <!-- Central Connection Ring -->
-            <div class="w-48 h-28 rounded-full border-2 border-white/5 flex items-center justify-center">
-                <div class="w-40 h-40 rounded-full border border-white/10 flex items-center justify-center">
-                    <div class="w-32 h-32 rounded-full hyper-glass flex items-center justify-center">
-                        <span id="central-icon" class="material-symbols-outlined text-5xl text-gray-600 animate-pulse">sensors_off</span>
+    <main class="flex-1 w-full max-w-md mx-auto w-full animate-enter">
+        
+        <div class="px-6 mb-6 mt-2">
+            <div class="relative w-full bg-gradient-to-br from-gray-900 to-gray-800 dark:from-emerald-900 dark:to-black rounded-[2rem] p-6 text-white overflow-hidden shadow-2xl shadow-emerald-900/20 group hover:scale-[1.02] transition-transform duration-300">
+                
+                <div class="absolute top-[-50px] right-[-50px] w-48 h-48 bg-emerald-500/20 blur-[60px] rounded-full pointer-events-none"></div>
+                
+                <div class="relative z-10">
+                    <div class="flex justify-between items-start mb-1">
+                        <div>
+                            <span class="inline-flex items-center gap-1 bg-white/10 backdrop-blur-md border border-white/10 px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider text-emerald-300 mb-2">
+                                <span class="material-icons-round text-[12px]">trending_up</span> +12% vs yesterday
+                            </span>
+                            <p class="text-gray-400 text-xs font-medium">Today's Earnings</p>
+                        </div>
+                        <div class="h-8 flex items-end gap-1 opacity-80">
+                            <div class="w-1.5 bg-emerald-500/50 rounded-t-sm h-[40%]"></div>
+                            <div class="w-1.5 bg-emerald-500/50 rounded-t-sm h-[60%]"></div>
+                            <div class="w-1.5 bg-emerald-500 rounded-t-sm h-[80%]"></div>
+                            <div class="w-1.5 bg-white rounded-t-sm h-[100%]"></div>
+                        </div>
+                    </div>
+                    
+                    <h1 class="text-4xl font-black tracking-tight mb-6">$157<span class="text-2xl text-emerald-400">.34</span></h1>
+
+                    <div class="flex gap-3">
+                        <div class="bg-white/5 rounded-xl p-3 flex-1 backdrop-blur-sm border border-white/5 flex flex-col justify-between">
+                            <span class="material-icons-round text-gray-400 text-sm mb-1">local_shipping</span>
+                            <div>
+                                <p class="text-lg font-bold leading-none">12</p>
+                                <p class="text-[10px] text-gray-400">Trips</p>
+                            </div>
+                        </div>
+                        <div class="bg-white/5 rounded-xl p-3 flex-1 backdrop-blur-sm border border-white/5 flex flex-col justify-between">
+                            <span class="material-icons-round text-gray-400 text-sm mb-1">schedule</span>
+                            <div>
+                                <p class="text-lg font-bold leading-none">4h 20m</p>
+                                <p class="text-[10px] text-gray-400">Online</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- Rotating Orbits -->
-            <div class="absolute inset-0 border border-primary/20 rounded-full animate-[spin_10s_linear_infinite] opacity-50"></div>
-            <div class="absolute inset-4 border border-white/5 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
         </div>
-        
-        <div class="text-center">
-            <h2 id="main-headline" class="text-2xl font-bold text-white mb-2 tracking-tight">Awaiting Orders</h2>
-            <p id="sub-headline" class="soft-text text-[10px] font-bold uppercase tracking-[0.3em]">Initialize shift to begin tracking</p>
+
+        <div class="px-6 mb-8">
+            <div class="relative">
+                <div id="swipe-trigger" class="swipe-container bg-gray-200 dark:bg-white/10" onclick="toggleStatus()">
+                    
+                    <div id="swipe-knob" class="swipe-knob">
+                        <span id="knob-icon" class="material-icons-round text-2xl text-emerald-600 transition-all duration-300">power_settings_new</span>
+                    </div>
+
+                    <div id="swipe-text-offline" class="swipe-text text-gray-500 dark:text-gray-400 z-10">Swipe to Go Online</div>
+                    <div id="swipe-text-online" class="swipe-text text-white z-10 opacity-0">You are Online</div>
+                </div>
+
+                <p id="status-hint" class="text-center text-xs text-gray-400 mt-3 font-medium transition-all">You are currently offline.</p>
+            </div>
+
+            <div id="live-activity" class="hidden transform transition-all duration-500 opacity-0 scale-95 origin-top mt-4">
+                <div class="bg-white dark:bg-[#18181b] border border-gray-100 dark:border-white/5 rounded-[1.5rem] p-1 shadow-lg shadow-gray-200/50 dark:shadow-none">
+                    <div class="bg-emerald-50/50 dark:bg-emerald-900/10 rounded-[1.2rem] p-5 border border-emerald-100 dark:border-emerald-500/20 relative overflow-hidden">
+                        <span class="absolute top-4 right-4 flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                        </span>
+
+                        <h3 class="font-bold text-gray-900 dark:text-white text-lg">Looking for orders...</h3>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 mb-4">You are in a high demand zone.</p>
+                        
+                        <div class="flex gap-3">
+                            <button class="flex-1 py-3 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl text-xs font-bold text-gray-700 dark:text-white shadow-sm hover:bg-gray-50 dark:hover:bg-white/10 transition-colors">
+                                View Map
+                            </button>
+                            <button class="flex-1 py-3 bg-emerald-500 rounded-xl text-xs font-bold text-white shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform">
+                                Surge: +$2.00
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-[#121214] rounded-t-[2.5rem] p-6 shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.05)] dark:shadow-black/50 min-h-[300px]">
+            <div class="flex justify-between items-end mb-6">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Recent Activity</h3>
+                <a href="#" class="text-xs font-bold text-emerald-500 hover:text-emerald-400">See All</a>
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex items-center gap-4 group cursor-pointer active:scale-95 transition-transform duration-200">
+                    <div class="w-12 h-12 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 flex items-center justify-center group-hover:bg-emerald-50 dark:group-hover:bg-emerald-900/20 transition-colors">
+                        <span class="material-icons-round text-emerald-500">local_mall</span>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-sm font-bold text-gray-900 dark:text-white">Grocery Batch</h4>
+                        <p class="text-[10px] font-semibold text-gray-400">2:30 PM • 4.2 mi</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-bold text-gray-900 dark:text-white">$14.50</p>
+                        <span class="text-[9px] font-bold text-emerald-500 bg-emerald-100 dark:bg-emerald-900/30 px-1.5 py-0.5 rounded text-xs">+ Tip</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 group cursor-pointer active:scale-95 transition-transform duration-200">
+                    <div class="w-12 h-12 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 flex items-center justify-center group-hover:bg-emerald-50 dark:group-hover:bg-emerald-900/20 transition-colors">
+                        <span class="material-icons-round text-orange-400">restaurant</span>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-sm font-bold text-gray-900 dark:text-white">Burger King</h4>
+                        <p class="text-[10px] font-semibold text-gray-400">1:15 PM • 1.8 mi</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-bold text-gray-900 dark:text-white">$8.20</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 group cursor-pointer active:scale-95 transition-transform duration-200">
+                    <div class="w-12 h-12 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 flex items-center justify-center group-hover:bg-emerald-50 dark:group-hover:bg-emerald-900/20 transition-colors">
+                        <span class="material-icons-round text-purple-400">local_shipping</span>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-sm font-bold text-gray-900 dark:text-white">Package Delivery</h4>
+                        <p class="text-[10px] font-semibold text-gray-400">12:40 PM • 6.5 mi</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-bold text-gray-900 dark:text-white">$22.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="order-alert" class="fixed bottom-24 inset-x-4 transform translate-y-40 opacity-0 transition-all duration-500 z-50">
+        <div class="bg-gray-900 dark:bg-white text-white dark:text-black p-4 rounded-[1.5rem] shadow-2xl flex items-center gap-4 border border-white/10 dark:border-gray-200">
+            <div class="w-12 h-12 bg-white/20 dark:bg-black/10 rounded-full flex items-center justify-center shrink-0">
+                <span class="material-icons-round text-xl animate-bounce">notifications_active</span>
+            </div>
+            <div class="flex-1">
+                <h4 class="font-bold text-sm">New Order Nearby!</h4>
+                <p class="text-xs opacity-80">$12.00 • 2.5 miles</p>
+            </div>
+            <button onclick="window.location.href='orders.php'" class="bg-emerald-500 hover:bg-emerald-400 text-white px-5 py-3 rounded-xl text-xs font-bold shadow-lg shadow-emerald-500/30 transition-all active:scale-95">
+                Accept
+            </button>
         </div>
     </div>
 
-    <!-- Bottom Command Center -->
-    <div class="mt-auto relative z-30 flex flex-col gap-5 px-6 pb-32">
-        <!-- Mission Metrics -->
-        <div class="mission-metrics">
-            <div class="hyper-glass rounded-[2rem] p-5 flex flex-col justify-between">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="w-10 h-5 rounded-xl bg-primary/10 flex items-center justify-center">
-                        <span class="material-icons-round text-primary text-xl">payments</span>
-                    </div>
-                    <span class="text-[10px] font-bold text-green-500 bg-green-500/10 px-2 py-1 rounded-lg">+$12.40 Today</span>
-                </div>
-                <div>
-                    <h5 class="soft-text text-[9px] font-bold uppercase tracking-widest mb-1">Session Earnings</h5>
-                    <p class="text-2xl font-bold text-white tracking-tighter">$124.50</p>
-                </div>
-            </div>
-            <div class="hyper-glass rounded-[2rem] p-5 flex flex-col justify-between">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="w-10 h-5 rounded-xl bg-primary/10 flex items-center justify-center">
-                        <span class="material-icons-round text-primary text-xl">dataset</span>
-                    </div>
-                </div>
-                <div>
-                    <h5 class="soft-text text-[9px] font-bold uppercase tracking-widest mb-1">Total Tasks</h5>
-                    <p class="text-2xl font-bold text-white tracking-tighter">08<span class="text-gray-600 text-lg">/12</span></p>
-                </div>
-            </div>
-        </div>
+    <?php include 'includes/navbar.php'; ?>
 
-        <!-- Shift Ignition -->
-        <div class="hyper-glass rounded-[2.5rem] p-3">
-            <div id="shift-slider" class="relative h-16 bg-black/40 rounded-full overflow-hidden p-1.5 border border-white/5">
-                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <p class="text-gray-500 font-bold tracking-[0.4em] text-[9px] uppercase">Shift Ignition</p>
-                </div>
-                <div id="slider-thumb" class="absolute left-1.5 top-1.5 bottom-1.5 w-24 primary-gradient rounded-full shadow-[0_0_20px_rgba(255,107,0,0.4)] flex items-center justify-center z-10 transition-transform duration-200 cursor-pointer">
-                    <span id="slider-icon" class="material-symbols-outlined text-white text-3xl font-light">bolt</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
-
-<?php include 'includes/navbar.php'; ?>
-
-<script src="/assets/js/audio_manager.js"></script>
-<script>
-    const slider = document.getElementById('shift-slider');
-    const thumb = document.getElementById('slider-thumb');
-    const icon = document.getElementById('slider-icon');
-    const statusText = document.getElementById('status-text');
-    const statusDot = document.getElementById('status-dot');
-    const centralIcon = document.getElementById('central-icon');
-    const mainHeadline = document.getElementById('main-headline');
-    const subHeadline = document.getElementById('sub-headline');
-    
-    let isOnline = false;
-    let isDragging = false;
-    let startX = 0;
-    
-    const handleStart = (e) => {
-        isDragging = true;
-        startX = (e.touches ? e.touches[0].clientX : e.clientX);
-        thumb.style.transition = 'none';
-        thumb.classList.add('scale-95');
-    };
-
-    const handleMove = (e) => {
-        if (!isDragging) return;
-        const currentX = (e.touches ? e.touches[0].clientX : e.clientX);
-        const deltaX = currentX - startX;
-        const maxDelta = slider.offsetWidth - thumb.offsetWidth - 12;
-        const boundedDelta = Math.max(0, Math.min(deltaX, maxDelta));
+    <script>
+        let isOnline = false;
         
-        thumb.style.transform = `translateX(${boundedDelta}px)`;
-        
-        // Dynamic opacity based on progress
-        const progress = boundedDelta / maxDelta;
-        thumb.style.boxShadow = `0 0 ${20 + (progress * 30)}px rgba(255,107,0,${0.4 + (progress * 0.4)})`;
-        
-        if (deltaX > maxDelta * 0.95) {
-            triggerOnline();
+        // Element Selection
+        const swipeContainer = document.getElementById('swipe-trigger');
+        const swipeKnob = document.getElementById('swipe-knob');
+        const knobIcon = document.getElementById('knob-icon');
+        const textOffline = document.getElementById('swipe-text-offline');
+        const textOnline = document.getElementById('swipe-text-online');
+        const statusHint = document.getElementById('status-hint');
+        const liveActivity = document.getElementById('live-activity');
+        const orderAlert = document.getElementById('order-alert');
+        const headerDot = document.getElementById('header-status-dot');
+
+        function toggleStatus() {
+            isOnline = !isOnline;
+            const containerWidth = swipeContainer.offsetWidth;
+            const knobWidth = swipeKnob.offsetWidth;
+            const maxTranslate = containerWidth - knobWidth - 8; // 8px buffer for padding
+
+            if (isOnline) {
+                // --- ONLINE STATE ---
+                
+                // 1. Move Button
+                swipeContainer.classList.remove('bg-gray-200', 'dark:bg-white/10');
+                swipeContainer.classList.add('bg-emerald-500');
+                
+                swipeKnob.style.transform = `translateX(${maxTranslate}px)`;
+                
+                // 2. Change Icon
+                knobIcon.innerText = "check";
+                knobIcon.style.transform = "rotate(360deg)";
+                
+                // 3. Text & Hint
+                textOffline.classList.add('opacity-0');
+                textOnline.classList.remove('opacity-0');
+                
+                statusHint.innerText = "You're online. Finding orders...";
+                statusHint.classList.add('text-emerald-500');
+                
+                // 4. Header Dot
+                headerDot.classList.remove('bg-gray-400');
+                headerDot.classList.add('bg-emerald-500', 'shadow-[0_0_10px_rgba(16,185,129,0.5)]');
+
+                // 5. Show Live Activity
+                liveActivity.classList.remove('hidden');
+                // Small delay to allow display:block to apply before opacity transition
+                setTimeout(() => {
+                    liveActivity.classList.remove('opacity-0', 'scale-95');
+                    liveActivity.classList.add('opacity-100', 'scale-100');
+                }, 10);
+
+                // 6. Simulate Order (Demo Purpose)
+                setTimeout(showOrderAlert, 3500);
+
+            } else {
+                // --- OFFLINE STATE ---
+                
+                // 1. Reset Button
+                swipeContainer.classList.add('bg-gray-200', 'dark:bg-white/10');
+                swipeContainer.classList.remove('bg-emerald-500');
+                
+                swipeKnob.style.transform = `translateX(0px)`;
+                
+                // 2. Reset Icon
+                knobIcon.innerText = "power_settings_new";
+                knobIcon.style.transform = "rotate(0deg)";
+                
+                // 3. Reset Text
+                textOffline.classList.remove('opacity-0');
+                textOnline.classList.add('opacity-0');
+                
+                statusHint.innerText = "You are currently offline.";
+                statusHint.classList.remove('text-emerald-500');
+
+                // 4. Reset Header Dot
+                headerDot.classList.add('bg-gray-400');
+                headerDot.classList.remove('bg-emerald-500', 'shadow-[0_0_10px_rgba(16,185,129,0.5)]');
+
+                // 5. Hide Live Activity
+                liveActivity.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    liveActivity.classList.add('hidden');
+                }, 500); // Wait for transition to finish
+                
+                hideOrderAlert();
+            }
         }
-    };
 
-    const handleEnd = () => {
-        if (!isDragging) return;
-        isDragging = false;
-        thumb.classList.remove('scale-95');
-        thumb.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-        
-        if (!isOnline) {
-            thumb.style.transform = 'translateX(0px)';
-            thumb.style.boxShadow = '0 0 20px rgba(255,107,0,0.4)';
-        } else {
-            const maxDelta = slider.offsetWidth - thumb.offsetWidth - 12;
-            thumb.style.transform = `translateX(${maxDelta}px)`;
+        // Notification Logic
+        function showOrderAlert() {
+            if(!isOnline) return;
+            // Play sound effect here if needed
+            orderAlert.classList.remove('translate-y-40', 'opacity-0');
         }
-    };
 
-    slider.addEventListener('touchstart', handleStart);
-    slider.addEventListener('mousedown', handleStart);
-    document.addEventListener('touchmove', handleMove);
-    document.addEventListener('mousemove', handleMove);
-    document.addEventListener('touchend', handleEnd);
-    document.addEventListener('mouseup', handleEnd);
+        function hideOrderAlert() {
+            orderAlert.classList.add('translate-y-40', 'opacity-0');
+        }
+        
+        // Theme Toggle Logic
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                html.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
 
-    function triggerOnline() {
-        if (isOnline) return;
-        isOnline = true;
-        
-        // Haptic & Sound Effects
-        if (window.audioManager) window.audioManager.notify('shiftStart');
-        
-        const maxDelta = slider.offsetWidth - thumb.offsetWidth - 12;
-        thumb.style.transform = `translateX(${maxDelta}px)`;
-        thumb.classList.remove('primary-gradient');
-        thumb.classList.add('bg-green-500');
-        thumb.style.boxShadow = '0 0 30px rgba(34,197,94,0.6)';
-        icon.innerText = 'check';
-        
-        // Update UI States
-        statusText.innerText = 'Active Service';
-        statusText.classList.remove('text-gray-400');
-        statusText.classList.add('text-green-400');
-        statusDot.classList.remove('bg-gray-600');
-        statusDot.classList.add('bg-green-500', 'shadow-[0_0_12px_rgba(34,197,94,0.6)]', 'animate-pulse');
-        
-        centralIcon.innerText = 'radar';
-        centralIcon.classList.remove('text-gray-600');
-        centralIcon.classList.add('text-primary');
-        
-        mainHeadline.innerText = 'System Live';
-        subHeadline.innerText = 'Scanning for nearby delivery requests';
-        subHeadline.classList.remove('soft-text');
-        subHeadline.classList.add('text-primary/80');
-
-        // Reset interaction
-        isDragging = false;
-        
-        // Simulated New Order Notification after 3 seconds
-        setTimeout(() => {
-            showNewOrderNotification();
-        }, 3000);
-    }
-
-    function showNewOrderNotification() {
-        if (window.audioManager) window.audioManager.notify('newOrder', true, true);
-        
-        const notification = document.createElement('div');
-        notification.id = 'new-order-popup';
-        notification.className = 'fixed top-24 left-6 right-6 z-[100] hyper-glass border border-primary/30 p-6 rounded-[2.5rem] shadow-[0_30px_60px_rgba(0,0,0,0.8)] animate-slide-up';
-        notification.innerHTML = `
-            <div class="flex items-center gap-5">
-                <div class="w-16 h-16 primary-gradient rounded-2xl flex items-center justify-center shadow-lg">
-                    <span class="material-icons-round text-white text-4xl">restaurant</span>
-                </div>
-                <div class="flex-1">
-                    <p class="text-[10px] font-bold text-primary uppercase tracking-[0.2em] mb-1">Order Intercepted</p>
-                    <h3 class="text-xl font-bold text-white tracking-tight">FreshGo Mart #928</h3>
-                    <p class="text-[11px] text-gray-400 font-medium">1.2 miles • 15 min ETA</p>
-                </div>
-            </div>
-            <div class="flex gap-3 mt-6">
-                <button onclick="dismissNotification()" class="flex-1 bg-white/5 py-4 rounded-2xl text-[10px] font-bold text-gray-500 uppercase tracking-widest border border-white/5 active:scale-95 transition-all">Reject</button>
-                <button onclick="acceptOrder()" class="flex-[2] primary-gradient py-4 rounded-2xl text-[10px] font-bold text-white uppercase tracking-widest shadow-lg active:scale-95 transition-all">Accept Mission</button>
-            </div>
-        `;
-        document.body.appendChild(notification);
-    }
-
-    function dismissNotification() {
-        if (window.audioManager) window.audioManager.stop('newOrder');
-        document.getElementById('new-order-popup').classList.add('opacity-0', 'translate-y-10');
-        setTimeout(() => document.getElementById('new-order-popup').remove(), 500);
-    }
-
-    function acceptOrder() {
-        if (window.audioManager) window.audioManager.stop('newOrder');
-        window.location.href='orders.php';
-    }
-</script>
-
+        // Check for saved theme preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        }
+    </script>
 </body>
 </html>

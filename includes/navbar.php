@@ -1,33 +1,57 @@
 <?php
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
-<nav class="fixed bottom-0 left-0 w-full z-50 bg-background-dark/95 backdrop-blur-3xl border-t border-white/[0.03]">
-    <div class="max-w-screen-xl mx-auto px-10 h-16 flex justify-between items-center bg-transparent">
-        <a href="index.php" class="relative group flex flex-col items-center justify-center transition-all px-4 h-full <?php echo $current_page == 'index.php' ? 'text-primary' : 'text-gray-500 hover:text-gray-400'; ?>">
-            <span class="material-symbols-outlined text-2xl transition-all" style="font-variation-settings: 'wght' <?php echo $current_page == 'index.php' ? '300' : '200'; ?>, 'FILL' <?php echo $current_page == 'index.php' ? '1' : '0'; ?>;">grid_view</span>
+<nav class="fixed bottom-1 left-1/2 -translate-x-1/2 w-[90%] max-w-md z-50 transition-all duration-500">
+    <div class="bg-white/80 dark:bg-[#161B22]/80 backdrop-blur-2xl border border-gray-100 dark:border-white/5 rounded-[2.5rem] shadow-premium-hover px-3 py-2.5 flex justify-around items-center">
+        <!-- Home -->
+        <a href="index.php" class="relative flex flex-col items-center py-2 px-5 transition-all duration-300">
+            <div class="relative z-10 transition-transform duration-300 <?php echo $current_page == 'index.php' ? 'scale-110 -translate-y-0.5' : ''; ?>">
+                <span class="material-icons-round text-2xl <?php echo $current_page == 'index.php' ? 'text-primary' : 'text-gray-400 dark:text-gray-600'; ?>">grid_view</span>
+            </div>
             <?php if ($current_page == 'index.php'): ?>
-                <span class="absolute bottom-1.5 w-1 h-1 bg-primary rounded-full"></span>
+                <div class="absolute inset-x-2 inset-y-1 bg-blue-50 dark:bg-primary/10 rounded-2xl z-0 transition-all duration-500"></div>
+                <span class="text-[9px] font-extrabold text-primary uppercase tracking-widest mt-1 opacity-100 scale-100 transition-all">Home</span>
+            <?php else: ?>
+                <span class="text-[9px] font-extrabold text-gray-400 dark:text-gray-600 uppercase tracking-widest mt-1 opacity-0 scale-75 transition-all">Home</span>
             <?php endif; ?>
         </a>
 
-        <a href="orders.php" class="relative group flex flex-col items-center justify-center transition-all px-4 h-full <?php echo $current_page == 'orders.php' ? 'text-primary' : 'text-gray-500 hover:text-gray-400'; ?>">
-            <span class="material-symbols-outlined text-2xl transition-all" style="font-variation-settings: 'wght' <?php echo $current_page == 'orders.php' ? '300' : '200'; ?>, 'FILL' <?php echo $current_page == 'orders.php' ? '1' : '0'; ?>;">local_shipping</span>
+        <!-- Orders -->
+        <a href="orders.php" class="relative flex flex-col items-center py-2 px-5 transition-all duration-300">
+            <div class="relative z-10 transition-transform duration-300 <?php echo $current_page == 'orders.php' ? 'scale-110 -translate-y-0.5' : ''; ?>">
+                <span class="material-icons-round text-2xl <?php echo $current_page == 'orders.php' ? 'text-primary' : 'text-gray-400 dark:text-gray-600'; ?>">local_shipping</span>
+            </div>
             <?php if ($current_page == 'orders.php'): ?>
-                <span class="absolute bottom-1.5 w-1 h-1 bg-primary rounded-full"></span>
+                <div class="absolute inset-x-2 inset-y-1 bg-blue-50 dark:bg-primary/10 rounded-2xl z-0 transition-all duration-500"></div>
+                <span class="text-[9px] font-extrabold text-primary uppercase tracking-widest mt-1 opacity-100 scale-100 transition-all">Orders</span>
+            <?php else: ?>
+                <span class="text-[9px] font-extrabold text-gray-400 dark:text-gray-600 uppercase tracking-widest mt-1 opacity-0 scale-75 transition-all">Orders</span>
             <?php endif; ?>
         </a>
 
-        <a href="earnings.php" class="relative group flex flex-col items-center justify-center transition-all px-4 h-full <?php echo $current_page == 'earnings.php' ? 'text-primary' : 'text-gray-500 hover:text-gray-400'; ?>">
-            <span class="material-symbols-outlined text-2xl transition-all" style="font-variation-settings: 'wght' <?php echo $current_page == 'earnings.php' ? '300' : '200'; ?>, 'FILL' <?php echo $current_page == 'earnings.php' ? '1' : '0'; ?>;">account_balance_wallet</span>
+        <!-- Wallet -->
+        <a href="earnings.php" class="relative flex flex-col items-center py-2 px-5 transition-all duration-300">
+            <div class="relative z-10 transition-transform duration-300 <?php echo $current_page == 'earnings.php' ? 'scale-110 -translate-y-0.5' : ''; ?>">
+                <span class="material-icons-round text-2xl <?php echo $current_page == 'earnings.php' ? 'text-primary' : 'text-gray-400 dark:text-gray-600'; ?>">account_balance_wallet</span>
+            </div>
             <?php if ($current_page == 'earnings.php'): ?>
-                <span class="absolute bottom-1.5 w-1 h-1 bg-primary rounded-full"></span>
+                <div class="absolute inset-x-2 inset-y-1 bg-blue-50 dark:bg-primary/10 rounded-2xl z-0 transition-all duration-500"></div>
+                <span class="text-[9px] font-extrabold text-primary uppercase tracking-widest mt-1 opacity-100 scale-100 transition-all">Wallet</span>
+            <?php else: ?>
+                <span class="text-[9px] font-extrabold text-gray-400 dark:text-gray-600 uppercase tracking-widest mt-1 opacity-0 scale-75 transition-all">Wallet</span>
             <?php endif; ?>
         </a>
 
-        <a href="profile.php" class="relative group flex flex-col items-center justify-center transition-all px-4 h-full <?php echo $current_page == 'profile.php' ? 'text-primary' : 'text-gray-500 hover:text-gray-400'; ?>">
-            <span class="material-symbols-outlined text-2xl transition-all" style="font-variation-settings: 'wght' <?php echo $current_page == 'profile.php' ? '300' : '200'; ?>, 'FILL' <?php echo $current_page == 'profile.php' ? '1' : '0'; ?>;">person</span>
+        <!-- Profile -->
+        <a href="profile.php" class="relative flex flex-col items-center py-2 px-5 transition-all duration-300">
+            <div class="relative z-10 transition-transform duration-300 <?php echo $current_page == 'profile.php' ? 'scale-110 -translate-y-0.5' : ''; ?>">
+                <span class="material-icons-round text-2xl <?php echo $current_page == 'profile.php' ? 'text-primary' : 'text-gray-400 dark:text-gray-600'; ?>">person</span>
+            </div>
             <?php if ($current_page == 'profile.php'): ?>
-                <span class="absolute bottom-1.5 w-1 h-1 bg-primary rounded-full"></span>
+                <div class="absolute inset-x-2 inset-y-1 bg-blue-50 dark:bg-primary/10 rounded-2xl z-0 transition-all duration-500"></div>
+                <span class="text-[9px] font-extrabold text-primary uppercase tracking-widest mt-1 opacity-100 scale-100 transition-all">Profile</span>
+            <?php else: ?>
+                <span class="text-[9px] font-extrabold text-gray-400 dark:text-gray-600 uppercase tracking-widest mt-1 opacity-0 scale-75 transition-all">Profile</span>
             <?php endif; ?>
         </a>
     </div>
