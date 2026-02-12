@@ -15,67 +15,30 @@
 
     <!-- Minimal Stats -->
     <div class="grid grid-cols-3 gap-4 mb-12">
-        <div class="text-center p-4 rounded-3xl bg-white/5 border border-white/5">
-            <p class="text-lg font-bold text-white">2.4k</p>
-            <p class="text-[8px] font-bold text-gray-600 uppercase tracking-widest mt-1">Delivery</p>
-        </div>
-        <div class="text-center p-4 rounded-3xl bg-white/5 border border-white/5">
-            <p class="text-lg font-bold text-white">2y</p>
-            <p class="text-[8px] font-bold text-gray-600 uppercase tracking-widest mt-1">Exp.</p>
-        </div>
-        <div class="text-center p-4 rounded-3xl bg-white/5 border border-white/5">
-            <p class="text-lg font-bold text-white">99%</p>
-            <p class="text-[8px] font-bold text-gray-600 uppercase tracking-widest mt-1">Rate</p>
-        </div>
+        <?= UI::card(UI::stat('Delivery', '2.4k', null, 'white'), 'p-0') ?>
+        <?= UI::card(UI::stat('Exp.', '2y', null, 'white'), 'p-0') ?>
+        <?= UI::card(UI::stat('Rate', '99%', null, 'white'), 'p-0') ?>
     </div>
 
     <!-- Menu Options (Minimalist) -->
     <div class="space-y-3">
-        <div onclick="window.location.href='profile.php'" class="minimal-card p-5 rounded-[1.5rem] flex items-center justify-between group cursor-pointer">
-            <div class="flex items-center gap-4">
-                <span class="material-icons-round text-gray-500 group-hover:text-primary transition-colors">person</span>
-                <span class="text-sm font-medium text-white/90">Identity & Safety</span>
-            </div>
-            <span class="material-icons-round text-gray-700 text-sm">chevron_right</span>
+        <?= UI::listItem('Identity & Safety', 'Verify your credentials', null, 'person', 'gray-500') ?>
+        <div onclick="window.location.href='vehicle_details.php'">
+            <?= UI::listItem('Vehicle Management', 'Manage your transport', null, 'electric_scooter', 'gray-500') ?>
+        </div>
+        <div onclick="window.location.href='settings.php'">
+            <?= UI::listItem('App Preferences', 'Personalize your app', null, 'tune', 'gray-500') ?>
+        </div>
+        <div onclick="window.location.href='support.php'">
+            <?= UI::listItem('Support Center', 'Get help from our team', null, 'help_outline', 'gray-500') ?>
+        </div>
+        <div onclick="window.location.href='cash_tracking.php'">
+            <?= UI::listItem('Earnings & Cash', 'Track your payouts', null, 'account_balance_wallet', 'gray-500') ?>
         </div>
 
-        <div onclick="window.location.href='vehicle_details.php'" class="minimal-card p-5 rounded-[1.5rem] flex items-center justify-between group cursor-pointer">
-            <div class="flex items-center gap-4">
-                <span class="material-icons-round text-gray-500 group-hover:text-primary transition-colors">electric_scooter</span>
-                <span class="text-sm font-medium text-white/90">Vehicle Management</span>
-            </div>
-            <span class="material-icons-round text-gray-700 text-sm">chevron_right</span>
+        <div class="mt-8">
+            <?= UI::button('Terminate Session', 'danger', "window.location.href='auth/login.php'") ?>
         </div>
-
-        <div onclick="window.location.href='settings.php'" class="minimal-card p-5 rounded-[1.5rem] flex items-center justify-between group cursor-pointer">
-            <div class="flex items-center gap-4">
-                <span class="material-icons-round text-gray-500 group-hover:text-primary transition-colors">tune</span>
-                <span class="text-sm font-medium text-white/90">App Preferences</span>
-            </div>
-            <span class="material-icons-round text-gray-700 text-sm">chevron_right</span>
-        </div>
-
-        <div onclick="window.location.href='support.php'" class="minimal-card p-5 rounded-[1.5rem] flex items-center justify-between group cursor-pointer">
-            <div class="flex items-center gap-4">
-                <span class="material-icons-round text-gray-500 group-hover:text-primary transition-colors">help_outline</span>
-                <span class="text-sm font-medium text-white/90">Support Center</span>
-            </div>
-            <span class="material-icons-round text-gray-700 text-sm">chevron_right</span>
-        </div>
-
-        <div onclick="window.location.href='cash_tracking.php'" class="minimal-card p-5 rounded-[1.5rem] flex items-center justify-between group cursor-pointer">
-            <div class="flex items-center gap-4">
-                <span class="material-icons-round text-gray-500 group-hover:text-primary transition-colors">account_balance_wallet</span>
-                <span class="text-sm font-medium text-white/90">Earnings & Cash</span>
-            </div>
-            <span class="material-icons-round text-gray-700 text-sm">chevron_right</span>
-        </div>
-
-        <div onclick="window.location.href='auth/login.php'" class="bg-red-500/5 border border-red-500/10 p-5 rounded-[1.5rem] flex items-center justify-center mt-6 active:scale-[0.98] transition-all cursor-pointer">
-            <span class="text-xs font-bold text-red-500 uppercase tracking-widest">Terminate Session</span>
-        </div>
-    </div>
-</main>
     </div>
 </main>
 

@@ -1,32 +1,21 @@
 <?php include 'includes/header.php'; ?>
 
-<main class="relative min-h-screen pb-32 pt-16 px-8">
-    <div class="mb-12 text-center">
-        <h1 class="text-3xl font-bold text-white mb-2">Earnings</h1>
-        <p class="soft-text text-[10px] font-bold uppercase tracking-[0.2em]">Current Period: Oct 1 - Oct 7</p>
-    </div>
+<main class="relative min-h-screen pb-32 pt-24 px-8">
+    <?= UI::pageHeader('Earnings', 'Oct 1 - Oct 7') ?>
 
     <!-- Minimal Balance Card -->
     <div class="mb-10">
-        <div class="minimal-card p-10 rounded-[3rem] border border-white/5 flex flex-col items-center">
-            <p class="soft-text text-[9px] font-bold uppercase tracking-[0.2em] mb-3">Available to Withdraw</p>
-            <h2 class="text-5xl font-bold text-white mb-8 tracking-tight">$1,240.50</h2>
-            <button class="w-full primary-gradient py-4 rounded-2xl text-[10px] font-bold text-white uppercase tracking-widest shadow-xl active:scale-95 transition-all">
-                Transfer to Bank
-            </button>
-        </div>
+        <?= UI::card('
+            <p class="soft-text text-[9px] font-bold uppercase tracking-[0.2em] mb-3 text-center">Available to Withdraw</p>
+            <h2 class="text-5xl font-bold text-white mb-8 tracking-tight text-center">$1,240.50</h2>
+            '.UI::button('Transfer to Bank', 'primary').'
+        ', 'p-10') ?>
     </div>
 
     <!-- Minimal Stats Row -->
     <div class="grid grid-cols-2 gap-4 mb-10">
-        <div class="minimal-card p-6 rounded-[2rem] border border-white/5">
-            <p class="soft-text text-[8px] font-bold uppercase tracking-widest mb-1">Total Jobs</p>
-            <h3 class="text-2xl font-bold text-white uppercase tracking-tighter">128</h3>
-        </div>
-        <div class="minimal-card p-6 rounded-[2rem] border border-white/5">
-            <p class="soft-text text-[8px] font-bold uppercase tracking-widest mb-1">Hours</p>
-            <h3 class="text-2xl font-bold text-white uppercase tracking-tighter">42.5</h3>
-        </div>
+        <?= UI::card(UI::stat('Total Jobs', '128', null, 'white'), 'p-2') ?>
+        <?= UI::card(UI::stat('Hours', '42.5', null, 'white'), 'p-2') ?>
     </div>
 
     <!-- Refined Performance Chart -->

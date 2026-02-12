@@ -2,7 +2,7 @@ class AudioManager {
     constructor() {
         this.tones = {
             notification: 'https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3',
-            newOrder: 'https://cdn.pixabay.com/audio/2022/03/10/audio_5072782e4e.mp3', // Urgent Melodic Ringtone (Delivery style)
+            newOrder: 'https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3', // Delivery Bell (Mixkit)
             success: 'https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3',
             shiftStart: 'https://assets.mixkit.co/active_storage/sfx/2012/2012-preview.mp3'
         };

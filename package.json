@@ -1,0 +1,25 @@
+{
+  "name": "driver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tailwindcss -i ./assets/css/src.css -o ./assets/css/main.css",
+    "watch": "npx tailwindcss -i ./assets/css/src.css -o ./assets/css/main.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SNEHASISHS45/driver.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SNEHASISHS45/driver/issues"
+  },
+  "homepage": "https://github.com/SNEHASISHS45/driver#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+}
